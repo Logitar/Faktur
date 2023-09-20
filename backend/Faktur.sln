@@ -21,6 +21,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logitar.Faktur.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logitar.Faktur.EntityFrameworkCore.Relational", "src\Logitar.Faktur.EntityFrameworkCore.Relational\Logitar.Faktur.EntityFrameworkCore.Relational.csproj", "{CBAF8554-2BDA-4485-9570-CB88C49B5A1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logitar.Faktur.EntityFrameworkCore.SqlServer", "src\Logitar.Faktur.EntityFrameworkCore.SqlServer\Logitar.Faktur.EntityFrameworkCore.SqlServer.csproj", "{24DC93DC-B7B3-4AB7-9F4F-C5A41BFE889E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logitar.Faktur.Web", "src\Logitar.Faktur.Web\Logitar.Faktur.Web.csproj", "{F8953372-022E-4B74-971C-27D013AFDFCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logitar.Faktur", "src\Logitar.Faktur\Logitar.Faktur.csproj", "{0B3E19D8-172E-4BB4-8A3C-C4C41179038C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +53,18 @@ Global
 		{CBAF8554-2BDA-4485-9570-CB88C49B5A1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBAF8554-2BDA-4485-9570-CB88C49B5A1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBAF8554-2BDA-4485-9570-CB88C49B5A1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24DC93DC-B7B3-4AB7-9F4F-C5A41BFE889E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24DC93DC-B7B3-4AB7-9F4F-C5A41BFE889E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24DC93DC-B7B3-4AB7-9F4F-C5A41BFE889E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24DC93DC-B7B3-4AB7-9F4F-C5A41BFE889E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8953372-022E-4B74-971C-27D013AFDFCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8953372-022E-4B74-971C-27D013AFDFCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8953372-022E-4B74-971C-27D013AFDFCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8953372-022E-4B74-971C-27D013AFDFCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B3E19D8-172E-4BB4-8A3C-C4C41179038C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B3E19D8-172E-4BB4-8A3C-C4C41179038C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B3E19D8-172E-4BB4-8A3C-C4C41179038C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B3E19D8-172E-4BB4-8A3C-C4C41179038C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
