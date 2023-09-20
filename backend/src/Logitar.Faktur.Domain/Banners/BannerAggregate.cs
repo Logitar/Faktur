@@ -9,7 +9,7 @@ public class BannerAggregate : AggregateRoot
   private DisplayName? _displayName = null;
   private Description? _description = null;
 
-  public new BannerId Id => new(Id.Value);
+  public new BannerId Id => new(base.Id.Value);
 
   public DisplayName DisplayName
   {

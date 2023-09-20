@@ -22,6 +22,8 @@ internal abstract class AggregateEntity
 
     CreatedBy = @event.ActorId.Value;
     CreatedOn = @event.OccurredOn.ToUniversalTime();
+
+    Update(@event);
   }
 
   protected void Update(DomainEvent @event)

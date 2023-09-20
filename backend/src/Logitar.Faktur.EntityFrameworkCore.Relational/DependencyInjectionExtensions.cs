@@ -3,7 +3,6 @@ using Logitar.Faktur.Domain.Banners;
 using Logitar.Faktur.EntityFrameworkCore.Relational.Repositories;
 using Logitar.Faktur.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace Logitar.Faktur.EntityFrameworkCore.Relational;
 

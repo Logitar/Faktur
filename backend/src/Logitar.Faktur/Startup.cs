@@ -32,23 +32,20 @@ internal class Startup : StartupBase
       services.AddOpenApi();
     }
 
-    string connectionString;
     DatabaseProvider databaseProvider = _configuration.GetValue<DatabaseProvider?>("DatabaseProvider")
       ?? DatabaseProvider.EntityFrameworkCorePostgreSQL;
     switch (databaseProvider)
     {
       //case DatabaseProvider.EntityFrameworkCorePostgreSQL:
       //  connectionString = _configuration.GetValue<string>("POSTGRESQLCONNSTR_Faktur") ?? string.Empty;
-      //  services.AddLogitarFakturWithEntityFrameworkCorePostgreSQL(connectionString);
       //  healthChecks.AddDbContextCheck<EventContext>();
       //  healthChecks.AddDbContextCheck<FakturContext>();
       //  break; // TODO(fpion): PostgreSQL
       case DatabaseProvider.EntityFrameworkCoreSqlServer:
-        connectionString = _configuration.GetValue<string>("SQLCONNSTR_Faktur") ?? string.Empty;
-        services.AddLogitarFakturWithEntityFrameworkCoreSqlServer(connectionString);
+        services.AddLogitarFakturWithEntityFrameworkCoreSqlServer(_configuration);
         healthChecks.AddDbContextCheck<EventContext>();
         healthChecks.AddDbContextCheck<FakturContext>();
-        break; // TODO(fpion): PostgreSQL
+        break;
       default:
         throw new DatabaseProviderNotSupportedException(databaseProvider);
     }

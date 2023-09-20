@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Logitar.Faktur.Domain;
 
