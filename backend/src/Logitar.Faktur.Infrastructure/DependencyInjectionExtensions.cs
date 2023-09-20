@@ -13,6 +13,7 @@ public static class DependencyInjectionExtensions
     return services
       .AddLogitarEventSourcingInfrastructure()
       .AddLogitarFakturApplication()
+      .AddScoped<IEventBus, EventBus>()
       .AddSingleton<IEventSerializer>(serviceProvider => new EventSerializer(new JsonConverter[]
       {
         new DescriptionConverter(),
