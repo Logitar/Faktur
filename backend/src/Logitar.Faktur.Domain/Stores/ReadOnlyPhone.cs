@@ -7,11 +7,12 @@ public record ReadOnlyPhone : IPhone
 {
   public const int CountryCodeMaximumLength = 2;
   public const int NumberMaximumLength = 20;
+  public const int ExtensionMaximumLength = 10;
 
   public string? CountryCode { get; }
   public string Number { get; }
   public string? Extension { get; }
-  //public string Formatted => this.Format(); // TODO(fpion): PhoneHelper
+  public string E164Formatted => ""; // this.Format(); // TODO(fpion): PhoneHelper
 
   public ReadOnlyPhone(string number, string? countryCode = null, string? extension = null)
   {
@@ -38,6 +39,10 @@ internal class ReadOnlyPhoneValidator : AbstractValidator<ReadOnlyPhone>
       .MaximumLength(ReadOnlyPhone.NumberMaximumLength)
       //.Must(p => p.IsValid()) // TODO(fpion): PhoneHelper
       .WithPropertyName(BuildPropertyName(propertyName, nameof(IPhone.Number)));
+
+    When(x => x.Extension != null, () => RuleFor(x => x.Extension).NotEmpty()
+      .MaximumLength(ReadOnlyPhone.ExtensionMaximumLength)
+      .WithPropertyName(BuildPropertyName(propertyName, nameof(IPhone.Extension))));
   }
 
   private static string? BuildPropertyName(string? baseName, string propertyName)

@@ -16,7 +16,7 @@ public record ReadOnlyAddress : IPostalAddress
   public string? Region { get; }
   public string? PostalCode { get; }
   public string Country { get; }
-  //public string Formatted => this.Format(); // TODO(fpion): PostalAddressHelper
+  public string Formatted => ""; // this.Format(); // TODO(fpion): PostalAddressHelper
 
   public ReadOnlyAddress(string street, string locality, string country, string? region = null, string? postalCode = null)
   {

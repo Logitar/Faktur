@@ -2,8 +2,11 @@
 using Logitar.Faktur.Application;
 using Logitar.Faktur.Application.Caching;
 using Logitar.Faktur.Domain;
+using Logitar.Faktur.Domain.Banners;
+using Logitar.Faktur.Domain.Stores;
 using Logitar.Faktur.Infrastructure.Caching;
 using Logitar.Faktur.Infrastructure.Consumers.Banners;
+using Logitar.Faktur.Infrastructure.Consumers.Stores;
 using Logitar.Faktur.Infrastructure.Settings;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
@@ -56,13 +59,18 @@ public static class DependencyInjectionExtensions
     configurator.AddConsumer<BannerCreatedEventConsumer>();
     configurator.AddConsumer<BannerDeletedEventConsumer>();
     configurator.AddConsumer<BannerUpdatedEventConsumer>();
+    configurator.AddConsumer<StoreCreatedEventConsumer>();
+    configurator.AddConsumer<StoreDeletedEventConsumer>();
+    configurator.AddConsumer<StoreUpdatedEventConsumer>();
 
     return configurator;
   }
 
   private static IEnumerable<JsonConverter> GetJsonConverters() => new JsonConverter[]
   {
+    new BannerIdConverter(),
     new DescriptionConverter(),
-    new DisplayNameConverter()
+    new DisplayNameConverter(),
+    new StoreIdConverter()
   };
 }

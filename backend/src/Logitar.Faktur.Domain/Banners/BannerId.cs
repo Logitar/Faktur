@@ -16,3 +16,18 @@ public record BannerId
     AggregateId = aggregateId;
   }
 }
+
+public class BannerIdConverter : JsonConverter<BannerId>
+{
+  public override BannerId? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  {
+    string? value = reader.GetString();
+
+    return value == null ? null : new BannerId(value);
+  }
+
+  public override void Write(Utf8JsonWriter writer, BannerId bannerId, JsonSerializerOptions options)
+  {
+    writer.WriteStringValue(bannerId?.Value);
+  }
+}

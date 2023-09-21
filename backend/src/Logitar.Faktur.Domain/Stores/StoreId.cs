@@ -16,3 +16,18 @@ public record StoreId
     AggregateId = aggregateId;
   }
 }
+
+public class StoreIdConverter : JsonConverter<StoreId>
+{
+  public override StoreId? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  {
+    string? value = reader.GetString();
+
+    return value == null ? null : new StoreId(value);
+  }
+
+  public override void Write(Utf8JsonWriter writer, StoreId bannerId, JsonSerializerOptions options)
+  {
+    writer.WriteStringValue(bannerId?.Value);
+  }
+}

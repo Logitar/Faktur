@@ -21,7 +21,7 @@ public class BannerController : ControllerBase // TODO(fpion): Authorization
   public async Task<ActionResult<CommandResult>> CreateAsync([FromBody] CreateBannerPayload payload, CancellationToken cancellationToken)
   {
     CommandResult result = await _bannerService.CreateAsync(payload, cancellationToken);
-    Uri uri = new($"{Request.Scheme}://{Request.Host}/banners/{result.Id}");
+    Uri uri = new($"{Request.Scheme}://{Request.Host}/banners/{result.Id}"); // TODO(fpion): refactor
 
     return Accepted(uri, result);
   }

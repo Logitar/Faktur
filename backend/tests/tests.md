@@ -1,4 +1,4 @@
-# Tests (40)
+# Tests (45)
 
 ## Application (16)
 
@@ -37,7 +37,7 @@
 - StoreId
 - StoreNumber
 
-## EntityFrameworkCore.Relational (10)
+## EntityFrameworkCore.Relational (14)
 
 - ActorEntity
 - ActorService
@@ -45,10 +45,14 @@
 - BannerEntity
 - BannerEventHandler and/or BannerEventConsumers
 - BannerQuerier
-- QueryingExtensions
 - BannerRepository
+- QueryingExtensions
 - SqlHelper
 - SqlServerHelper
+- StoreEntity
+- StoreEventHandler and/or BannerEventConsumers
+- StoreQuerier
+- StoreRepository
 
 ## Infrastructure (3)
 
@@ -56,6 +60,7 @@
 - EventBus
 - RetryHelper
 
-## Web (1)
+## Web (2)
 
 - SearchBannersQuery
+- SearchStoresQuery
