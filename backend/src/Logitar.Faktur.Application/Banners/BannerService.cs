@@ -1,4 +1,5 @@
 ﻿using Logitar.Faktur.Application.Banners.Commands;
+using Logitar.Faktur.Application.Banners.Queries;
 using Logitar.Faktur.Contracts;
 using Logitar.Faktur.Contracts.Banners;
 using Logitar.Faktur.Contracts.Search;
@@ -20,19 +21,19 @@ internal class BannerService : IBannerService
     return await _mediator.Send(new CreateBannerCommand(payload), cancellationToken);
   }
 
-  public Task<CommandResult> DeleteAsync(string id, CancellationToken cancellationToken)
+  public async Task<CommandResult> DeleteAsync(string id, CancellationToken cancellationToken)
   {
-    throw new NotImplementedException();
+    return await _mediator.Send(new DeleteBannerCommand(id), cancellationToken);
   }
 
-  public Task<Banner?> ReadAsync(string id, CancellationToken cancellationToken)
+  public async Task<Banner?> ReadAsync(string id, CancellationToken cancellationToken)
   {
-    throw new NotImplementedException();
+    return await _mediator.Send(new ReadBannerQuery(id), cancellationToken);
   }
 
-  public Task<CommandResult> ReplaceAsync(string id, ReplaceBannerPayload payload, CancellationToken cancellationToken)
+  public async Task<CommandResult> ReplaceAsync(string id, ReplaceBannerPayload payload, CancellationToken cancellationToken)
   {
-    throw new NotImplementedException();
+    return await _mediator.Send(new ReplaceBannerCommand(id, payload), cancellationToken);
   }
 
   public Task<SearchResults<Banner>> SearchAsync(SearchBannersPayload payload, CancellationToken cancellationToken)
@@ -40,8 +41,8 @@ internal class BannerService : IBannerService
     throw new NotImplementedException();
   }
 
-  public Task<CommandResult> UpdateAsync(string id, UpdateBannerPayload payload, CancellationToken cancellationToken)
+  public async Task<CommandResult> UpdateAsync(string id, UpdateBannerPayload payload, CancellationToken cancellationToken)
   {
-    throw new NotImplementedException();
+    return await _mediator.Send(new UpdateBannerCommand(id, payload), cancellationToken);
   }
 }

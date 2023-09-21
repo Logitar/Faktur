@@ -19,20 +19,20 @@ internal class ExceptionHandlingFilter : ExceptionFilterAttribute
       context.Result = handler(context);
       context.ExceptionHandled = true;
     }
-    else if (context.Exception is IdentifierAlreadyUsedException)
+    else if (context.Exception is AggregateNotFoundException aggregateNotFound)
     {
-      context.Result = HandleConflictValidationException(context);
+      context.Result = new NotFoundObjectResult(aggregateNotFound.Failure);
+      context.ExceptionHandled = true;
+    }
+    else if (context.Exception is IdentifierAlreadyUsedException identifierAlreadyUsed)
+    {
+      context.Result = new ConflictObjectResult(identifierAlreadyUsed.Failure);
       context.ExceptionHandled = true;
     }
     else
     {
       base.OnException(context);
     }
-  }
-
-  private static IActionResult HandleConflictValidationException(ExceptionContext context)
-  {
-    return new ConflictObjectResult(((IValidationException)context.Exception).Failure);
   }
 
   private static IActionResult HandleValidationException(ExceptionContext context)

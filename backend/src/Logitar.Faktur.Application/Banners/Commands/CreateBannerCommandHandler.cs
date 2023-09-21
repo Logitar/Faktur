@@ -42,12 +42,6 @@ internal class CreateBannerCommandHandler : IRequestHandler<CreateBannerCommand,
 
     await _bannerRepository.SaveAsync(banner, cancellationToken);
 
-    return new CommandResult
-    {
-      Id = banner.Id.Value,
-      Version = banner.Version,
-      Actor = _applicationContext.Actor,
-      Timestamp = banner.UpdatedOn
-    };
+    return _applicationContext.CreateCommandResult(banner);
   }
 }

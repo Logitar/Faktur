@@ -17,4 +17,14 @@ internal class ActorEntity
   private ActorEntity()
   {
   }
+
+  public Actor ToActor() => new()
+  {
+    Id = Id,
+    Type = Type,
+    IsDeleted = IsDeleted,
+    DisplayName = DisplayName,
+    EmailAddress = EmailAddress,
+    PictureUrl = PictureUrl
+  };
 }
