@@ -13,6 +13,8 @@ public record StoreNumber
     Value = value.Trim();
     new StoreNumberValidator(nameof(StoreNumber)).ValidateAndThrow(this);
   }
+
+  public static StoreNumber? TryCreate(string? value) => string.IsNullOrWhiteSpace(value) ? null : new(value);
 }
 
 public class StoreNumberConverter : JsonConverter<StoreNumber>

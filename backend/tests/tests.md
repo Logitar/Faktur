@@ -1,6 +1,6 @@
-# Tests (34)
+# Tests (40)
 
-## Application (10)
+## Application (16)
 
 ### Miscellaneous (4)
 
@@ -9,14 +9,20 @@
 - ExceptionExtensions
 - ExceptionMessageBuilder
 
-### Command/Query Handlers (6)
+### Command/Query Handlers (12)
 
 - CreateBannerCommandHandler
+- CreateStoreCommandHandler
 - DeleteBannerCommandHandler
+- DeleteStoreCommandHandler
 - ReadBannerQueryHandler
+- ReadStoreQueryHandler
 - ReplaceBannerCommandHandler
+- ReplaceStoreCommandHandler
 - SearchBannersQueryHandler
+- SearchStoresQueryHandler
 - UpdateBannerCommandHandler
+- UpdateStoreCommandHandler
 
 ## Domain (10)
 

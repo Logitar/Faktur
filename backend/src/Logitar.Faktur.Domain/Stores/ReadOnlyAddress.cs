@@ -28,6 +28,9 @@ public record ReadOnlyAddress : IPostalAddress
 
     new ReadOnlyAddressValidator(nameof(Address)).ValidateAndThrow(this);
   }
+
+  public static ReadOnlyAddress? TryCreate(AddressPayload? address) => address == null ? null
+    : new(address.Street, address.Locality, address.Country, address.Region, address.PostalCode);
 }
 
 internal class ReadOnlyAddressValidator : AbstractValidator<ReadOnlyAddress>

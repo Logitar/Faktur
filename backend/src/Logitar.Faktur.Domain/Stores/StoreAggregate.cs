@@ -7,8 +7,6 @@ namespace Logitar.Faktur.Domain.Stores;
 
 public class StoreAggregate : AggregateRoot
 {
-  private BannerId? _bannerId = null;
-
   private StoreNumber? _number = null;
   private DisplayName? _displayName = null;
   private Description? _description = null;
@@ -18,18 +16,7 @@ public class StoreAggregate : AggregateRoot
 
   public new StoreId Id => new(base.Id.Value);
 
-  public BannerId? BannerId
-  {
-    get => _bannerId;
-    set
-    {
-      if (value != _bannerId)
-      {
-        UpdatedEvent.BannerId = new Modification<BannerId>(value);
-        _bannerId = value;
-      }
-    }
-  }
+  public BannerId? BannerId { get; private set; }
 
   public StoreNumber? Number
   {
@@ -124,6 +111,15 @@ public class StoreAggregate : AggregateRoot
 
   public void Delete(ActorId actorId = default) => ApplyChange(new StoreDeletedEvent(actorId));
 
+  public void SetBanner(BannerAggregate? banner)
+  {
+    if (banner?.Id != BannerId)
+    {
+      UpdatedEvent.BannerId = new Modification<BannerId>(banner?.Id);
+      BannerId = banner?.Id;
+    }
+  }
+
   public void Update(ActorId actorId = default)
   {
     foreach (DomainEvent change in Changes)
@@ -144,7 +140,7 @@ public class StoreAggregate : AggregateRoot
   {
     if (@event.BannerId != null)
     {
-      _bannerId = @event.BannerId.Value;
+      BannerId = @event.BannerId.Value;
     }
 
     if (@event.Number != null)
@@ -160,6 +156,10 @@ public class StoreAggregate : AggregateRoot
       _description = @event.Description.Value;
     }
 
+    if (@event.Address != null)
+    {
+      _address = @event.Address.Value;
+    }
     if (@event.Phone != null)
     {
       _phone = @event.Phone.Value;

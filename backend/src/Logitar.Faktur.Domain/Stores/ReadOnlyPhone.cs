@@ -21,6 +21,9 @@ public record ReadOnlyPhone : IPhone
 
     new ReadOnlyPhoneValidator(nameof(Phone)).ValidateAndThrow(this);
   }
+
+  public static ReadOnlyPhone? TryCreate(PhonePayload? phone) => phone == null ? null
+    : new(phone.Number, phone.CountryCode, phone.Extension);
 }
 
 internal class ReadOnlyPhoneValidator : AbstractValidator<ReadOnlyPhone>
