@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GraphQL.Server.Ui.Altair" Version="7.6.0" />
+    <PackageReference Include="GraphQL.Server.Ui.GraphiQL" Version="7.6.0" />
+    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="7.6.0" />
+    <PackageReference Include="GraphQL.Server.Ui.Voyager" Version="7.6.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
       <PrivateAssets>all</PrivateAssets>
@@ -22,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Logitar.Faktur.EntityFrameworkCore.SqlServer\Logitar.Faktur.EntityFrameworkCore.SqlServer.csproj" />
+    <ProjectReference Include="..\Logitar.Faktur.GraphQL\Logitar.Faktur.GraphQL.csproj" />
     <ProjectReference Include="..\Logitar.Faktur.Web\Logitar.Faktur.Web.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,7 @@
 ﻿using Logitar.EventSourcing.EntityFrameworkCore.Relational;
 using Logitar.Faktur.EntityFrameworkCore.Relational;
 using Logitar.Faktur.EntityFrameworkCore.SqlServer;
+using Logitar.Faktur.GraphQL;
 using Logitar.Faktur.Web;
 using Logitar.Faktur.Web.Extensions;
 
@@ -22,7 +23,7 @@ internal class Startup : StartupBase
     base.ConfigureServices(services);
 
     services.AddLogitarFakturWeb(_configuration);
-    //services.AddLogitarFakturGraphQL(_configuration); // TODO(fpion): GraphQL
+    services.AddLogitarFakturGraphQL(_configuration);
 
     services.AddApplicationInsightsTelemetry();
     IHealthChecksBuilder healthChecks = services.AddHealthChecks();
@@ -58,22 +59,22 @@ internal class Startup : StartupBase
       builder.UseOpenApi();
     }
 
-    //if (_configuration.GetValue<bool>("UseGraphQLAltair"))
-    //{
-    //  builder.UseGraphQLAltair();
-    //}
-    //if (_configuration.GetValue<bool>("UseGraphQLGraphiQL"))
-    //{
-    //  builder.UseGraphQLGraphiQL();
-    //}
-    //if (_configuration.GetValue<bool>("UseGraphQLPlayground"))
-    //{
-    //  builder.UseGraphQLPlayground();
-    //}
-    //if (_configuration.GetValue<bool>("UseGraphQLVoyager"))
-    //{
-    //  builder.UseGraphQLVoyager();
-    //} // TODO(fpion): GraphQL
+    if (_configuration.GetValue<bool>("UseGraphQLAltair"))
+    {
+      builder.UseGraphQLAltair();
+    }
+    if (_configuration.GetValue<bool>("UseGraphQLGraphiQL"))
+    {
+      builder.UseGraphQLGraphiQL();
+    }
+    if (_configuration.GetValue<bool>("UseGraphQLPlayground"))
+    {
+      builder.UseGraphQLPlayground();
+    }
+    if (_configuration.GetValue<bool>("UseGraphQLVoyager"))
+    {
+      builder.UseGraphQLVoyager();
+    }
 
     builder.UseHttpsRedirection();
     builder.UseCors();
@@ -82,7 +83,7 @@ internal class Startup : StartupBase
     //builder.UseAuthentication(); // TODO(fpion): Authentication
     //builder.UseAuthorization(); // TODO(fpion): Authorization
 
-    //builder.UseGraphQL<FakturSchema>("/graphql", options => options.AuthenticationSchemes.AddRange(Schemes.All)); // TODO(fpion): GraphQL
+    builder.UseGraphQL<FakturSchema>("/graphql" /*, options => options.AuthenticationSchemes.AddRange(Schemes.All)*/); // TODO(fpion): GraphQL
 
     if (builder is WebApplication application)
     {
