@@ -4,6 +4,8 @@ Receipt management system.
 
 ## Dependencies
 
+### ⚠️ Database
+
 To run the Faktur application, you need a running database. Supported database providers are listed
 in the `DatabaseProvider` enumeration.
 
@@ -15,10 +17,18 @@ by your desired database provider enumeration value.
 You can use a Docker container by executing one of the following commands. The connection strings
 are already configured in the `appsettings.Development.json` file.
 
-### PostgreSQL
+#### PostgreSQL
 
 `docker run --name Logitar.Faktur_postgres -e POSTGRES_PASSWORD=P@s$W0rD -p 5434:5432 -d postgres`
 
-### SQL Server
+#### SQL Server
 
 `docker run --name Logitar.Faktur_sqlserver -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=P@s$W0rD" -p 1434:1433 -d mcr.microsoft.com/mssql/server:2022-latest`
+
+### ⚠️ Messaging
+
+To run the Faktur application, you need a running message queue. For now, only RabbitMQ is
+supported. You can use a Docker container by executing the following command. The connection
+settings are already configured in the `appsettings.Development.json` file.
+
+`docker run --name Logitar.Faktur_rabbitmq -p 15634:15672 -p 5634:5672 -d masstransit/rabbitmq`
