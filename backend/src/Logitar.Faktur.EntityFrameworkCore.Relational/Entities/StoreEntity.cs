@@ -78,7 +78,7 @@ internal class StoreEntity : AggregateEntity
         AddressRegion = @event.Address.Value.Region;
         AddressPostalCode = @event.Address.Value.PostalCode;
         AddressCountry = @event.Address.Value.Country;
-        AddressFormatted = @event.Address.Value.Formatted;
+        AddressFormatted = @event.Address.Value.Format();
       }
     }
     if (@event.Phone != null)

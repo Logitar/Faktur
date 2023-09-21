@@ -12,7 +12,7 @@ public record ReadOnlyPhone : IPhone
   public string? CountryCode { get; }
   public string Number { get; }
   public string? Extension { get; }
-  public string E164Formatted => ""; // this.Format(); // TODO(fpion): PhoneHelper
+  public string E164Formatted => this.FormatToE164();
 
   public ReadOnlyPhone(string number, string? countryCode = null, string? extension = null)
   {
@@ -37,12 +37,17 @@ internal class ReadOnlyPhoneValidator : AbstractValidator<ReadOnlyPhone>
 
     RuleFor(x => x.Number).NotEmpty()
       .MaximumLength(ReadOnlyPhone.NumberMaximumLength)
-      //.Must(p => p.IsValid()) // TODO(fpion): PhoneHelper
       .WithPropertyName(BuildPropertyName(propertyName, nameof(IPhone.Number)));
 
     When(x => x.Extension != null, () => RuleFor(x => x.Extension).NotEmpty()
       .MaximumLength(ReadOnlyPhone.ExtensionMaximumLength)
       .WithPropertyName(BuildPropertyName(propertyName, nameof(IPhone.Extension))));
+
+    RuleFor(x => x)
+      .Must(x => x.IsValid())
+        .WithErrorCode("PhoneValidator")
+        .WithMessage("'{PropertyName}' must be a valid phone number.")
+      .WithPropertyName(propertyName);
   }
 
   private static string? BuildPropertyName(string? baseName, string propertyName)

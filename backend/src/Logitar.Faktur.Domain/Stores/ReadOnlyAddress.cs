@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Logitar.Faktur.Contracts.Stores;
+using System.Text;
 
 namespace Logitar.Faktur.Domain.Stores;
 
@@ -16,7 +17,6 @@ public record ReadOnlyAddress : IPostalAddress
   public string? Region { get; }
   public string? PostalCode { get; }
   public string Country { get; }
-  public string Formatted => ""; // this.Format(); // TODO(fpion): PostalAddressHelper
 
   public ReadOnlyAddress(string street, string locality, string country, string? region = null, string? postalCode = null)
   {
@@ -31,6 +31,32 @@ public record ReadOnlyAddress : IPostalAddress
 
   public static ReadOnlyAddress? TryCreate(AddressPayload? address) => address == null ? null
     : new(address.Street, address.Locality, address.Country, address.Region, address.PostalCode);
+
+  public string Format()
+  {
+    StringBuilder formatted = new();
+
+    string[] lines = Street.Remove("\r").Split('\n');
+    foreach (string line in lines)
+    {
+      formatted.AppendLine(line);
+    }
+
+    formatted.Append(Locality);
+    if (Region != null)
+    {
+      formatted.Append(' ').Append(Region);
+    }
+    if (PostalCode != null)
+    {
+      formatted.Append(' ').Append(PostalCode);
+    }
+    formatted.AppendLine();
+
+    formatted.Append(Country);
+
+    return formatted.ToString();
+  }
 }
 
 internal class ReadOnlyAddressValidator : AbstractValidator<ReadOnlyAddress>
@@ -45,13 +71,36 @@ internal class ReadOnlyAddressValidator : AbstractValidator<ReadOnlyAddress>
       .MaximumLength(ReadOnlyAddress.LocalityMaximumLength)
       .WithPropertyName(BuildPropertyName(propertyName, nameof(IPostalAddress.Locality)));
 
-    // TODO(fpion): validate Region
+    When(x => PostalAddressHelper.GetCountry(x.Country)?.Regions != null,
+      () => RuleFor(x => x.Region).NotEmpty()
+        .MaximumLength(ReadOnlyAddress.RegionMaximumLength)
+        .Must((address, country) => PostalAddressHelper.GetCountry(address.Country)!.Regions!.Contains(country))
+          .WithErrorCode("RegionValidator")
+          .WithMessage(x => $"'{{PropertyName}}' must be one of the following: {string.Join(", ", PostalAddressHelper.GetCountry(x.Country)!.Regions!)}.")
+        .WithPropertyName(BuildPropertyName(propertyName, nameof(IPostalAddress.Region)))
+    ).Otherwise(() => When(x => x.Region != null,
+      () => RuleFor(x => x.Region).NotEmpty()
+        .MaximumLength(ReadOnlyAddress.RegionMaximumLength)
+        .WithPropertyName(BuildPropertyName(propertyName, nameof(IPostalAddress.Region)))
+    ));
 
-    // TODO(fpion): validate Region
+    When(x => PostalAddressHelper.GetCountry(x.Country)?.PostalCode != null,
+      () => RuleFor(x => x.PostalCode).NotEmpty()
+        .MaximumLength(ReadOnlyAddress.PostalCodeMaximumLength)
+        .Matches(x => PostalAddressHelper.GetCountry(x.Country)!.PostalCode)
+        .WithPropertyName(BuildPropertyName(propertyName, nameof(IPostalAddress.PostalCode)))
+    ).Otherwise(() => When(x => x.PostalCode != null,
+      () => RuleFor(x => x.PostalCode).NotEmpty()
+        .MaximumLength(ReadOnlyAddress.PostalCodeMaximumLength)
+        .WithPropertyName(BuildPropertyName(propertyName, nameof(IPostalAddress.PostalCode)))
+    ));
 
     RuleFor(x => x.Country).NotEmpty()
       .MaximumLength(ReadOnlyAddress.CountryMaximumLength)
-      .WithPropertyName(BuildPropertyName(propertyName, nameof(IPostalAddress.Country))); // TODO(fpion): validate Country
+      .Must(PostalAddressHelper.IsSupported)
+        .WithErrorCode("CountryValidator")
+        .WithMessage($"'{{PropertyName}}' must be one of the following: {string.Join(", ", PostalAddressHelper.SupportedCountries)}.")
+      .WithPropertyName(BuildPropertyName(propertyName, nameof(IPostalAddress.Country)));
   }
 
   private static string? BuildPropertyName(string? baseName, string propertyName)

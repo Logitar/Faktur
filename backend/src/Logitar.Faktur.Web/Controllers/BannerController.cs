@@ -1,6 +1,7 @@
 ﻿using Logitar.Faktur.Contracts;
 using Logitar.Faktur.Contracts.Banners;
 using Logitar.Faktur.Contracts.Search;
+using Logitar.Faktur.Web.Extensions;
 using Logitar.Faktur.Web.Models.Banners;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ public class BannerController : ControllerBase // TODO(fpion): Authorization
   public async Task<ActionResult<CommandResult>> CreateAsync([FromBody] CreateBannerPayload payload, CancellationToken cancellationToken)
   {
     CommandResult result = await _bannerService.CreateAsync(payload, cancellationToken);
-    Uri uri = new($"{Request.Scheme}://{Request.Host}/banners/{result.Id}"); // TODO(fpion): refactor
+    Uri uri = new($"{Request.GetBaseUrl()}/banners/{result.Id}");
 
     return Accepted(uri, result);
   }

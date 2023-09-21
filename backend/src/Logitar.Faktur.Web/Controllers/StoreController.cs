@@ -1,6 +1,7 @@
 ﻿using Logitar.Faktur.Contracts;
 using Logitar.Faktur.Contracts.Search;
 using Logitar.Faktur.Contracts.Stores;
+using Logitar.Faktur.Web.Extensions;
 using Logitar.Faktur.Web.Models.Stores;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ public class StoreController : ControllerBase // TODO(fpion): Authorization
   public async Task<ActionResult<CommandResult>> CreateAsync([FromBody] CreateStorePayload payload, CancellationToken cancellationToken)
   {
     CommandResult result = await _storeService.CreateAsync(payload, cancellationToken);
-    Uri uri = new($"{Request.Scheme}://{Request.Host}/stores/{result.Id}"); // TODO(fpion): refactor
+    Uri uri = new($"{Request.GetBaseUrl()}/stores/{result.Id}");
 
     return Accepted(uri, result);
   }
