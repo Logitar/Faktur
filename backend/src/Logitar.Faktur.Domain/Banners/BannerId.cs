@@ -8,7 +8,11 @@ public record BannerId
   public string Value => AggregateId.Value;
 
   public BannerId(string value)
+    : this(Guid.TryParse(value.Trim(), out Guid guid) ? new AggregateId(guid) : new(value))
   {
-    AggregateId = Guid.TryParse(value.Trim(), out Guid guid) ? new(guid) : new(value);
+  }
+  public BannerId(AggregateId aggregateId)
+  {
+    AggregateId = aggregateId;
   }
 }

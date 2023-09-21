@@ -27,4 +27,4 @@ are already configured in the `appsettings.Development.json` file.
 
 TODO
 
-`docker run --name Logitar_rabbitmq -p 15634:15672 -p 5634:5672 -d masstransit/rabbitmq`
+`docker run --name Logitar.Faktur_rabbitmq -p 15634:15672 -p 5634:5672 -d masstransit/rabbitmq`
