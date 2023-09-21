@@ -1,0 +1,15 @@
+name: Build Faktur (Development)
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: docker build . -t francispion.azurecr.io/faktur:${{ github.sha }} -f src/Logitar.Faktur/Dockerfile
