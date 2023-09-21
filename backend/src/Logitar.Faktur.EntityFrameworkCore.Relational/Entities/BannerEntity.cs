@@ -12,6 +12,8 @@ internal class BannerEntity : AggregateEntity
 
   public IEnumerable<ActorId> ActorIds => new ActorId[] { new(CreatedBy), new(UpdatedBy) };
 
+  public List<StoreEntity> Stores { get; private set; } = new();
+
   public BannerEntity(BannerCreatedEvent @event) : base(@event)
   {
     DisplayName = @event.DisplayName.Value;

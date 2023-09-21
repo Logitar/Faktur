@@ -1,7 +1,9 @@
 ﻿using Logitar.EventSourcing.EntityFrameworkCore.Relational;
 using Logitar.Faktur.Application.Actors;
 using Logitar.Faktur.Application.Banners;
+using Logitar.Faktur.Application.Stores;
 using Logitar.Faktur.Domain.Banners;
+using Logitar.Faktur.Domain.Stores;
 using Logitar.Faktur.EntityFrameworkCore.Relational.Actors;
 using Logitar.Faktur.EntityFrameworkCore.Relational.Handlers;
 using Logitar.Faktur.EntityFrameworkCore.Relational.Queriers;
@@ -30,16 +32,22 @@ public static class DependencyInjectionExtensions
 
   private static IServiceCollection AddEventHandlers(this IServiceCollection services)
   {
-    return services.AddScoped<IBannerEventHandler, BannerEventHandler>();
+    return services
+      .AddScoped<IBannerEventHandler, BannerEventHandler>()
+      .AddScoped<IStoreEventHandler, StoreEventHandler>();
   }
 
   private static IServiceCollection AddQueriers(this IServiceCollection services)
   {
-    return services.AddScoped<IBannerQuerier, BannerQuerier>();
+    return services
+      .AddScoped<IBannerQuerier, BannerQuerier>()
+      .AddScoped<IStoreQuerier, StoreQuerier>();
   }
 
   private static IServiceCollection AddRepositories(this IServiceCollection services)
   {
-    return services.AddScoped<IBannerRepository, BannerRepository>();
+    return services
+      .AddScoped<IBannerRepository, BannerRepository>()
+      .AddScoped<IStoreRepository, StoreRepository>();
   }
 }

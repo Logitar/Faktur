@@ -83,7 +83,7 @@ internal class Startup : StartupBase
     //builder.UseAuthentication(); // TODO(fpion): Authentication
     //builder.UseAuthorization(); // TODO(fpion): Authorization
 
-    builder.UseGraphQL<FakturSchema>("/graphql" /*, options => options.AuthenticationSchemes.AddRange(Schemes.All)*/); // TODO(fpion): GraphQL
+    builder.UseGraphQL<FakturSchema>("/graphql" /*, options => options.AuthenticationSchemes.AddRange(Schemes.All)*/); // TODO(fpion): Authentication
 
     if (builder is WebApplication application)
     {

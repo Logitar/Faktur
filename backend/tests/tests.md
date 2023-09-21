@@ -1,6 +1,6 @@
-# Tests (29)
+# Tests (47)
 
-## Application (10)
+## Application (16)
 
 ### Miscellaneous (4)
 
@@ -9,24 +9,37 @@
 - ExceptionExtensions
 - ExceptionMessageBuilder
 
-### Command/Query Handlers (6)
+### Command/Query Handlers (12)
 
 - CreateBannerCommandHandler
+- CreateStoreCommandHandler
 - DeleteBannerCommandHandler
+- DeleteStoreCommandHandler
 - ReadBannerQueryHandler
+- ReadStoreQueryHandler
 - ReplaceBannerCommandHandler
+- ReplaceStoreCommandHandler
 - SearchBannersQueryHandler
+- SearchStoresQueryHandler
 - UpdateBannerCommandHandler
+- UpdateStoreCommandHandler
 
-## Domain (5)
+## Domain (12)
 
 - BannerAggregate
 - BannerId
 - Description
 - DisplayName
 - FluentValidationExtensions
+- PhoneExtensions
+- PostalAddressHelper
+- ReadOnlyAddress
+- ReadOnlyPhone
+- StoreAggregate
+- StoreId
+- StoreNumber
 
-## EntityFrameworkCore.Relational (10)
+## EntityFrameworkCore.Relational (14)
 
 - ActorEntity
 - ActorService
@@ -34,10 +47,14 @@
 - BannerEntity
 - BannerEventHandler and/or BannerEventConsumers
 - BannerQuerier
-- QueryingExtensions
 - BannerRepository
+- QueryingExtensions
 - SqlHelper
 - SqlServerHelper
+- StoreEntity
+- StoreEventHandler and/or BannerEventConsumers
+- StoreQuerier
+- StoreRepository
 
 ## Infrastructure (3)
 
@@ -45,6 +62,7 @@
 - EventBus
 - RetryHelper
 
-## Web (1)
+## Web (2)
 
 - SearchBannersQuery
+- SearchStoresQuery
