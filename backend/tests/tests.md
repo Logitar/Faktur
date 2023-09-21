@@ -1,4 +1,4 @@
-# Tests (45)
+# Tests (47)
 
 ## Application (16)
 
@@ -24,13 +24,15 @@
 - UpdateBannerCommandHandler
 - UpdateStoreCommandHandler
 
-## Domain (10)
+## Domain (12)
 
 - BannerAggregate
 - BannerId
 - Description
 - DisplayName
 - FluentValidationExtensions
+- PhoneExtensions
+- PostalAddressHelper
 - ReadOnlyAddress
 - ReadOnlyPhone
 - StoreAggregate
