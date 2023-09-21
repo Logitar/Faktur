@@ -2,7 +2,7 @@
 
 public record SearchPayload
 {
-  public IEnumerable<Guid> IdIn { get; set; } = Enumerable.Empty<Guid>();
+  public IEnumerable<string> IdIn { get; set; } = Enumerable.Empty<string>();
   public TextSearch Search { get; set; } = new();
 
   public IEnumerable<SortOption> Sort { get; set; } = Enumerable.Empty<SortOption>();

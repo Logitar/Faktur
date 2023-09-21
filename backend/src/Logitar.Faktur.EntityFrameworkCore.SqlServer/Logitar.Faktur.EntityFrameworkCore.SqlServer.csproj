@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Logitar.Data.SqlServer" Version="2.1.0" />
     <PackageReference Include="Logitar.EventSourcing.EntityFrameworkCore.SqlServer" Version="4.0.0" />
   </ItemGroup>
 

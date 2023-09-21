@@ -36,9 +36,9 @@ internal class BannerService : IBannerService
     return await _mediator.Send(new ReplaceBannerCommand(id, payload), cancellationToken);
   }
 
-  public Task<SearchResults<Banner>> SearchAsync(SearchBannersPayload payload, CancellationToken cancellationToken)
+  public async Task<SearchResults<Banner>> SearchAsync(SearchBannersPayload payload, CancellationToken cancellationToken)
   {
-    throw new NotImplementedException();
+    return await _mediator.Send(new SearchBannersQuery(payload), cancellationToken);
   }
 
   public async Task<CommandResult> UpdateAsync(string id, UpdateBannerPayload payload, CancellationToken cancellationToken)

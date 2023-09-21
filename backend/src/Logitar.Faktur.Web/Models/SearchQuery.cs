@@ -8,7 +8,7 @@ public record SearchQuery
   protected const string IsDescendingKeyword = "desc";
 
   [FromQuery(Name = "id")]
-  public Guid[] IdIn { get; set; } = Array.Empty<Guid>();
+  public string[] IdIn { get; set; } = Array.Empty<string>();
 
   [FromQuery(Name = "search_terms")]
   public string[] SearchTerms { get; set; } = Array.Empty<string>();

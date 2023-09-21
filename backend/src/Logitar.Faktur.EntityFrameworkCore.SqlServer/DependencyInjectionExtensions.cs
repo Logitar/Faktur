@@ -20,6 +20,7 @@ public static class DependencyInjectionExtensions
         b => b.MigrationsAssembly("Logitar.Faktur.EntityFrameworkCore.SqlServer")
       ))
       .AddLogitarEventSourcingWithEntityFrameworkCoreSqlServer(connectionString)
-      .AddLogitarFakturWithEntityFrameworkCoreRelational();
+      .AddLogitarFakturWithEntityFrameworkCoreRelational()
+      .AddSingleton<ISqlHelper, SqlServerHelper>();
   }
 }
