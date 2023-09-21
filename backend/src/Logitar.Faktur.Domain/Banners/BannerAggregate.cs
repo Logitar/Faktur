@@ -95,5 +95,5 @@ public class BannerAggregate : AggregateRoot
     }
   }
 
-  public override string ToString() => base.ToString();
+  public override string ToString() => $"{DisplayName.Value} | {base.ToString()}";
 }

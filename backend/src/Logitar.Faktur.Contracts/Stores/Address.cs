@@ -1,6 +1,6 @@
 ﻿namespace Logitar.Faktur.Contracts.Stores;
 
-public record Address
+public record Address : IPostalAddress
 {
   public string Street { get; set; } = string.Empty;
   public string Locality { get; set; } = string.Empty;

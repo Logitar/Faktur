@@ -1,4 +1,4 @@
-# Tests (29)
+# Tests (34)
 
 ## Application (10)
 
@@ -18,13 +18,18 @@
 - SearchBannersQueryHandler
 - UpdateBannerCommandHandler
 
-## Domain (5)
+## Domain (10)
 
 - BannerAggregate
 - BannerId
 - Description
 - DisplayName
 - FluentValidationExtensions
+- ReadOnlyAddress
+- ReadOnlyPhone
+- StoreAggregate
+- StoreId
+- StoreNumber
 
 ## EntityFrameworkCore.Relational (10)
 
