@@ -18,4 +18,4 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: docker build . -t francispion.azurecr.io/faktur:${{ github.sha }} -f backend/src/Logitar.Faktur/Dockerfile
+      - run: docker build . -t francispion.azurecr.io/faktur:${{ github.sha }} -f src/Logitar.Faktur/Dockerfile
