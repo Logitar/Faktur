@@ -4,7 +4,7 @@ namespace Logitar.Faktur.GraphQL.Banners;
 
 internal class BannerGraphType : AggregateGraphType<Banner>
 {
-  public BannerGraphType() : base("TODO")
+  public BannerGraphType() : base("Represents a group of stores operating under the same branding.")
   {
     Field(x => x.DisplayName)
       .Description("The display name of the banner.");
