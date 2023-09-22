@@ -1,5 +1,4 @@
-﻿using Logitar.EventSourcing;
-using Logitar.Faktur.Domain.Banners.Events;
+﻿using Logitar.Faktur.Domain.Banners.Events;
 
 namespace Logitar.Faktur.EntityFrameworkCore.Relational.Entities;
 
@@ -9,8 +8,6 @@ internal class BannerEntity : AggregateEntity
 
   public string DisplayName { get; private set; } = string.Empty;
   public string? Description { get; private set; }
-
-  public IEnumerable<ActorId> ActorIds => new ActorId[] { new(CreatedBy), new(UpdatedBy) };
 
   public List<StoreEntity> Stores { get; private set; } = new();
 

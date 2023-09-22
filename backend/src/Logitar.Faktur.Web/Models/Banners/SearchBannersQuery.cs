@@ -9,10 +9,11 @@ public record SearchBannersQuery : SearchQuery
   {
     SearchBannersPayload payload = new()
     {
-      IdIn = IdIn,
       Skip = Skip,
       Limit = Limit
     };
+    payload.Id.Operator = IdOperator;
+    payload.Id.Terms = IdTerms.Select(value => new SearchTerm(value));
     payload.Search.Operator = SearchOperator;
     payload.Search.Terms = SearchTerms.Select(value => new SearchTerm(value));
 

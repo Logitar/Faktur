@@ -5,6 +5,16 @@ namespace Logitar.Faktur.EntityFrameworkCore.Relational;
 
 public abstract class SqlHelper
 {
+  public IQueryBuilder ApplyIdSearch(IQueryBuilder builder, TextSearch search, ColumnId column)
+  {
+    search = new()
+    {
+      Operator = search.Operator,
+      Terms = search.Terms.Select(term => Guid.TryParse(term.Value, out Guid guid) ? new SearchTerm(guid.ToString()) : term)
+    };
+
+    return ApplyTextSearch(builder, search, column);
+  }
   public IQueryBuilder ApplyTextSearch(IQueryBuilder builder, TextSearch search, params ColumnId[] columns)
   {
     int termCount = search.Terms.Count();

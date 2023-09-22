@@ -31,6 +31,7 @@ internal class StoreQuerier : IStoreQuerier
 
     StoreEntity? store = await _stores.AsNoTracking()
       .Include(x => x.Banner)
+      .Include(x => x.Departments)
       .SingleOrDefaultAsync(x => x.AggregateId == aggregateId, cancellationToken);
 
     return store == null ? null : await MapAsync(store, cancellationToken);
@@ -38,18 +39,19 @@ internal class StoreQuerier : IStoreQuerier
 
   public async Task<SearchResults<Store>> SearchAsync(SearchStoresPayload payload, CancellationToken cancellationToken)
   {
-    BannerId? bannerId = string.IsNullOrWhiteSpace(payload.BannerId) ? null : new(payload.BannerId);
+    string? bannerId = string.IsNullOrWhiteSpace(payload.BannerId) ? null : new BannerId(payload.BannerId).Value;
 
     IQueryBuilder builder = _sqlHelper.QueryFrom(Db.Stores.Table)
-      .Join(new Join(JoinKind.Left, Db.Banners.BannerId, Db.Stores.BannerId))
-      .Where(Db.Banners.AggregateId, bannerId == null ? Operators.IsNull() : Operators.IsEqualTo(bannerId.Value))
-      .SelectAll(Db.Stores.Table)
-      .ApplyIdIn(payload.IdIn, Db.Stores.AggregateId);
+      .LeftJoin(Db.Banners.BannerId, Db.Stores.BannerId)
+      .Where(Db.Banners.AggregateId, bannerId == null ? Operators.IsNull() : Operators.IsEqualTo(bannerId))
+      .SelectAll(Db.Stores.Table);
+    _sqlHelper.ApplyIdSearch(builder, payload.Id, Db.Stores.AggregateId);
     _sqlHelper.ApplyTextSearch(builder, payload.Search, Db.Stores.Number, Db.Stores.DisplayName,
       Db.Stores.AddressFormatted, Db.Stores.PhoneE164Formatted);
 
     IQueryable<StoreEntity> query = _stores.FromQuery(builder)
       .Include(x => x.Banner)
+      .Include(x => x.Departments)
       .AsNoTracking();
 
     long total = await query.LongCountAsync(cancellationToken);
@@ -85,7 +87,7 @@ internal class StoreQuerier : IStoreQuerier
     => (await MapAsync(new[] { store }, cancellationToken)).Single();
   private async Task<IEnumerable<Store>> MapAsync(IEnumerable<StoreEntity> stores, CancellationToken cancellationToken)
   {
-    IEnumerable<ActorId> actorIds = stores.SelectMany(store => store.ActorIds);
+    IEnumerable<ActorId> actorIds = stores.SelectMany(store => store.GetActorIds());
     IEnumerable<Actor> actors = await _actorService.FindAsync(actorIds, cancellationToken);
     Mapper mapper = new(actors);
 

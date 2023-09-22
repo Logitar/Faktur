@@ -1,4 +1,5 @@
 ﻿using Logitar.EventSourcing;
+using Logitar.Faktur.Domain.Departments.Events;
 using Logitar.Faktur.Domain.Stores.Events;
 
 namespace Logitar.Faktur.EntityFrameworkCore.Relational.Entities;
@@ -26,7 +27,11 @@ internal class StoreEntity : AggregateEntity
   public string? PhoneExtension { get; private set; }
   public string? PhoneE164Formatted { get; private set; }
 
-  public IEnumerable<ActorId> ActorIds => new ActorId[] { new(CreatedBy), new(UpdatedBy) };
+  public override IEnumerable<ActorId> GetActorIds() => base.GetActorIds()
+    .Concat(Banner?.GetActorIds() ?? Enumerable.Empty<ActorId>())
+    .Concat(Departments.SelectMany(department => department.GetActorIds()));
+
+  public List<DepartmentEntity> Departments { get; private set; } = new();
 
   public StoreEntity(StoreCreatedEvent @event) : base(@event)
   {
@@ -35,6 +40,33 @@ internal class StoreEntity : AggregateEntity
 
   private StoreEntity() : base()
   {
+  }
+
+  public void RemoveDepartment(DepartmentRemovedEvent @event)
+  {
+    Update(@event);
+
+    DepartmentEntity? department = Departments.SingleOrDefault(x => x.Number == @event.Number.Value);
+    if (department != null)
+    {
+      Departments.Remove(department);
+    }
+  }
+
+  public void SetDepartment(DepartmentSavedEvent @event)
+  {
+    Update(@event);
+
+    DepartmentEntity? department = Departments.SingleOrDefault(x => x.Number == @event.Number.Value);
+    if (department == null)
+    {
+      department = new(@event, this);
+      Departments.Add(department);
+    }
+    else
+    {
+      department.Update(@event);
+    }
   }
 
   public void Update(StoreUpdatedEvent @event, BannerEntity? banner = null)

@@ -132,6 +132,69 @@ namespace Logitar.Faktur.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("Banners", (string)null);
                 });
 
+            modelBuilder.Entity("Logitar.Faktur.EntityFrameworkCore.Relational.Entities.DepartmentEntity", b =>
+                {
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("DepartmentId");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("CreatedOn");
+
+                    b.HasIndex("DisplayName");
+
+                    b.HasIndex("Number");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.HasIndex("UpdatedOn");
+
+                    b.HasIndex("StoreId", "Number")
+                        .IsUnique();
+
+                    b.ToTable("Departments", (string)null);
+                });
+
             modelBuilder.Entity("Logitar.Faktur.EntityFrameworkCore.Relational.Entities.StoreEntity", b =>
                 {
                     b.Property<int>("StoreId")
@@ -247,6 +310,17 @@ namespace Logitar.Faktur.EntityFrameworkCore.SqlServer.Migrations
                     b.ToTable("Stores", (string)null);
                 });
 
+            modelBuilder.Entity("Logitar.Faktur.EntityFrameworkCore.Relational.Entities.DepartmentEntity", b =>
+                {
+                    b.HasOne("Logitar.Faktur.EntityFrameworkCore.Relational.Entities.StoreEntity", "Store")
+                        .WithMany("Departments")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
             modelBuilder.Entity("Logitar.Faktur.EntityFrameworkCore.Relational.Entities.StoreEntity", b =>
                 {
                     b.HasOne("Logitar.Faktur.EntityFrameworkCore.Relational.Entities.BannerEntity", "Banner")
@@ -260,6 +334,11 @@ namespace Logitar.Faktur.EntityFrameworkCore.SqlServer.Migrations
             modelBuilder.Entity("Logitar.Faktur.EntityFrameworkCore.Relational.Entities.BannerEntity", b =>
                 {
                     b.Navigation("Stores");
+                });
+
+            modelBuilder.Entity("Logitar.Faktur.EntityFrameworkCore.Relational.Entities.StoreEntity", b =>
+                {
+                    b.Navigation("Departments");
                 });
 #pragma warning restore 612, 618
         }

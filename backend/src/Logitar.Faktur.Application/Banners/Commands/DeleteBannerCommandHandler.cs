@@ -24,6 +24,8 @@ internal class DeleteBannerCommandHandler : IRequestHandler<DeleteBannerCommand,
 
     banner.Delete(_applicationContext.ActorId);
 
+    // TODO(fpion): remove the banner from its store
+
     await _bannerRepository.SaveAsync(banner, cancellationToken);
 
     return _applicationContext.CreateCommandResult(banner);

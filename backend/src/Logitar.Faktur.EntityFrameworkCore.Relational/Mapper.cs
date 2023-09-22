@@ -3,6 +3,7 @@ using Logitar.Faktur.Application;
 using Logitar.Faktur.Contracts;
 using Logitar.Faktur.Contracts.Actors;
 using Logitar.Faktur.Contracts.Banners;
+using Logitar.Faktur.Contracts.Departments;
 using Logitar.Faktur.Contracts.Stores;
 using Logitar.Faktur.EntityFrameworkCore.Relational.Entities;
 
@@ -39,7 +40,27 @@ internal class Mapper
     return destination;
   }
 
-  public Store ToStore(StoreEntity source)
+  public Department ToDepartment(DepartmentEntity source) => ToDepartment(source, mapStore: true);
+  public Department ToDepartment(DepartmentEntity source, bool mapStore)
+  {
+    Department destination = new()
+    {
+      Number = source.Number,
+      DisplayName = source.DisplayName,
+      Description = source.Description,
+      Version = source.Version,
+      CreatedBy = FindActor(source.CreatedBy),
+      CreatedOn = ToUniversalTime(source.CreatedOn),
+      UpdatedBy = FindActor(source.UpdatedBy),
+      UpdatedOn = ToUniversalTime(source.UpdatedOn),
+      Store = (!mapStore || source.Store == null) ? null : ToStore(source.Store, mapDepartments: false)
+    };
+
+    return destination;
+  }
+
+  public Store ToStore(StoreEntity source) => ToStore(source, mapDepartments: true);
+  public Store ToStore(StoreEntity source, bool mapDepartments)
   {
     Store destination = new()
     {
@@ -72,6 +93,11 @@ internal class Mapper
         Extension = source.PhoneExtension,
         E164Formatted = source.PhoneE164Formatted
       };
+    }
+
+    if (mapDepartments)
+    {
+      destination.Departments = source.Departments.Select(department => ToDepartment(department, mapStore: false));
     }
 
     return destination;

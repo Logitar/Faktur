@@ -1,12 +1,16 @@
 ﻿using Logitar.EventSourcing;
 using Logitar.Faktur.Contracts;
 using Logitar.Faktur.Domain.Banners;
+using Logitar.Faktur.Domain.Departments;
+using Logitar.Faktur.Domain.Departments.Events;
 using Logitar.Faktur.Domain.Stores.Events;
 
 namespace Logitar.Faktur.Domain.Stores;
 
 public class StoreAggregate : AggregateRoot
 {
+  private readonly Dictionary<DepartmentNumber, ReadOnlyDepartment> _departments = new();
+
   private StoreNumber? _number = null;
   private DisplayName? _displayName = null;
   private Description? _description = null;
@@ -80,6 +84,8 @@ public class StoreAggregate : AggregateRoot
     }
   }
 
+  public IReadOnlyDictionary<DepartmentNumber, ReadOnlyDepartment> Departments => _departments.AsReadOnly();
+
   protected StoreUpdatedEvent UpdatedEvent
   {
     get
@@ -111,6 +117,19 @@ public class StoreAggregate : AggregateRoot
 
   public void Delete(ActorId actorId = default) => ApplyChange(new StoreDeletedEvent(actorId));
 
+  public bool RemoveDepartment(DepartmentNumber number, ActorId actorId = default)
+  {
+    if (!_departments.ContainsKey(number))
+    {
+      return false;
+    }
+
+    ApplyChange(new DepartmentRemovedEvent(actorId, number));
+
+    return true;
+  }
+  protected virtual void Apply(DepartmentRemovedEvent @event) => _departments.Remove(@event.Number);
+
   public void SetBanner(BannerAggregate? banner)
   {
     if (banner?.Id != BannerId)
@@ -119,6 +138,15 @@ public class StoreAggregate : AggregateRoot
       BannerId = banner?.Id;
     }
   }
+
+  public void SetDepartment(DepartmentNumber number, ReadOnlyDepartment department, ActorId actorId = default)
+  {
+    if (!_departments.TryGetValue(number, out ReadOnlyDepartment? existingDepartment) || existingDepartment != department)
+    {
+      ApplyChange(new DepartmentSavedEvent(actorId, number, department));
+    }
+  }
+  protected virtual void Apply(DepartmentSavedEvent @event) => _departments[@event.Number] = @event.Department;
 
   public void Update(ActorId actorId = default)
   {

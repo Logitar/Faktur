@@ -37,8 +37,8 @@ internal class BannerQuerier : IBannerQuerier
   public async Task<SearchResults<Banner>> SearchAsync(SearchBannersPayload payload, CancellationToken cancellationToken)
   {
     IQueryBuilder builder = _sqlHelper.QueryFrom(Db.Banners.Table)
-      .SelectAll(Db.Banners.Table)
-      .ApplyIdIn(payload.IdIn, Db.Banners.AggregateId);
+      .SelectAll(Db.Banners.Table);
+    _sqlHelper.ApplyIdSearch(builder, payload.Id, Db.Banners.AggregateId);
     _sqlHelper.ApplyTextSearch(builder, payload.Search, Db.Banners.DisplayName);
 
     IQueryable<BannerEntity> query = _banners.FromQuery(builder)
@@ -77,7 +77,7 @@ internal class BannerQuerier : IBannerQuerier
     => (await MapAsync(new[] { banner }, cancellationToken)).Single();
   private async Task<IEnumerable<Banner>> MapAsync(IEnumerable<BannerEntity> banners, CancellationToken cancellationToken)
   {
-    IEnumerable<ActorId> actorIds = banners.SelectMany(banner => banner.ActorIds);
+    IEnumerable<ActorId> actorIds = banners.SelectMany(banner => banner.GetActorIds());
     IEnumerable<Actor> actors = await _actorService.FindAsync(actorIds, cancellationToken);
     Mapper mapper = new(actors);
 
