@@ -39,6 +39,23 @@ internal class Mapper
     return destination;
   }
 
+  public Department ToDepartment(DepartmentEntity source)
+  {
+    Department destination = new()
+    {
+      Number = source.Number,
+      DisplayName = source.DisplayName,
+      Description = source.Description,
+      Version = source.Version,
+      CreatedBy = FindActor(source.CreatedBy),
+      CreatedOn = ToUniversalTime(source.CreatedOn),
+      UpdatedBy = FindActor(source.UpdatedBy),
+      UpdatedOn = ToUniversalTime(source.UpdatedOn)
+    };
+
+    return destination;
+  }
+
   public Store ToStore(StoreEntity source)
   {
     Store destination = new()
@@ -46,7 +63,8 @@ internal class Mapper
       Number = source.Number,
       DisplayName = source.DisplayName,
       Description = source.Description,
-      Banner = source.Banner == null ? null : ToBanner(source.Banner)
+      Banner = source.Banner == null ? null : ToBanner(source.Banner),
+      Departments = source.Departments.Select(ToDepartment)
     };
 
     MapAggregate(source, destination);

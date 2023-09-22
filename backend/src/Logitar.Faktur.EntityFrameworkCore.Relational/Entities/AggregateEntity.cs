@@ -13,6 +13,8 @@ internal abstract class AggregateEntity
   public string UpdatedBy { get; private set; } = string.Empty;
   public DateTime UpdatedOn { get; private set; }
 
+  public virtual IEnumerable<ActorId> GetActorIds() => new ActorId[] { new(CreatedBy), new(UpdatedBy) };
+
   protected AggregateEntity()
   {
   }

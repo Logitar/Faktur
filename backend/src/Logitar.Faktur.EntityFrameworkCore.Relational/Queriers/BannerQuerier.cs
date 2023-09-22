@@ -77,7 +77,7 @@ internal class BannerQuerier : IBannerQuerier
     => (await MapAsync(new[] { banner }, cancellationToken)).Single();
   private async Task<IEnumerable<Banner>> MapAsync(IEnumerable<BannerEntity> banners, CancellationToken cancellationToken)
   {
-    IEnumerable<ActorId> actorIds = banners.SelectMany(banner => banner.ActorIds);
+    IEnumerable<ActorId> actorIds = banners.SelectMany(banner => banner.GetActorIds());
     IEnumerable<Actor> actors = await _actorService.FindAsync(actorIds, cancellationToken);
     Mapper mapper = new(actors);
 

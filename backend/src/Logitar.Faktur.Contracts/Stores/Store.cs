@@ -12,4 +12,5 @@ public class Store : Aggregate
   public Phone? Phone { get; set; }
 
   public Banner? Banner { get; set; }
+  public IEnumerable<Department> Departments { get; set; } = Enumerable.Empty<Department>();
 }

@@ -31,6 +31,7 @@ internal class StoreQuerier : IStoreQuerier
 
     StoreEntity? store = await _stores.AsNoTracking()
       .Include(x => x.Banner)
+      .Include(x => x.Departments)
       .SingleOrDefaultAsync(x => x.AggregateId == aggregateId, cancellationToken);
 
     return store == null ? null : await MapAsync(store, cancellationToken);
@@ -50,6 +51,7 @@ internal class StoreQuerier : IStoreQuerier
 
     IQueryable<StoreEntity> query = _stores.FromQuery(builder)
       .Include(x => x.Banner)
+      .Include(x => x.Departments)
       .AsNoTracking();
 
     long total = await query.LongCountAsync(cancellationToken);
@@ -85,7 +87,7 @@ internal class StoreQuerier : IStoreQuerier
     => (await MapAsync(new[] { store }, cancellationToken)).Single();
   private async Task<IEnumerable<Store>> MapAsync(IEnumerable<StoreEntity> stores, CancellationToken cancellationToken)
   {
-    IEnumerable<ActorId> actorIds = stores.SelectMany(store => store.ActorIds);
+    IEnumerable<ActorId> actorIds = stores.SelectMany(store => store.GetActorIds());
     IEnumerable<Actor> actors = await _actorService.FindAsync(actorIds, cancellationToken);
     Mapper mapper = new(actors);
 
