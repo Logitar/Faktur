@@ -44,7 +44,7 @@ internal class DepartmentQuerier : IDepartmentQuerier
       .Join(Db.Stores.StoreId, Db.Departments.StoreId)
       .Where(Db.Stores.AggregateId, Operators.IsEqualTo(storeId))
       .SelectAll(Db.Departments.Table);
-    _sqlHelper.ApplyTextSearch(builder, payload.Id, Db.Departments.Number); // TODO(fpion): handle Guid Ids
+    _sqlHelper.ApplyIdSearch(builder, payload.Id, Db.Departments.Number);
     _sqlHelper.ApplyTextSearch(builder, payload.Search, Db.Departments.Number, Db.Departments.DisplayName);
 
     IQueryable<DepartmentEntity> query = _departments.FromQuery(builder)

@@ -38,7 +38,7 @@ internal class BannerQuerier : IBannerQuerier
   {
     IQueryBuilder builder = _sqlHelper.QueryFrom(Db.Banners.Table)
       .SelectAll(Db.Banners.Table);
-    _sqlHelper.ApplyTextSearch(builder, payload.Id, Db.Banners.AggregateId); // TODO(fpion): handle Guid Ids
+    _sqlHelper.ApplyIdSearch(builder, payload.Id, Db.Banners.AggregateId);
     _sqlHelper.ApplyTextSearch(builder, payload.Search, Db.Banners.DisplayName);
 
     IQueryable<BannerEntity> query = _banners.FromQuery(builder)
