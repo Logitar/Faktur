@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Logitar.Faktur.Application.Departments;
 using Logitar.Faktur.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -9,6 +10,7 @@ internal class ExceptionHandlingFilter : ExceptionFilterAttribute
 {
   private readonly Dictionary<Type, Func<ExceptionContext, IActionResult>> _handlers = new()
   {
+    [typeof(DepartmentNotFoundException)] = HandleDepartmentNotFoundException,
     [typeof(ValidationException)] = HandleValidationException
   };
 
@@ -33,6 +35,11 @@ internal class ExceptionHandlingFilter : ExceptionFilterAttribute
     {
       base.OnException(context);
     }
+  }
+
+  private static IActionResult HandleDepartmentNotFoundException(ExceptionContext context)
+  {
+    return new NotFoundObjectResult(((DepartmentNotFoundException)context.Exception).Failure);
   }
 
   private static IActionResult HandleValidationException(ExceptionContext context)
