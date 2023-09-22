@@ -1,4 +1,5 @@
 ﻿using Logitar.Faktur.Contracts.Banners;
+using Logitar.Faktur.Contracts.Departments;
 
 namespace Logitar.Faktur.Contracts.Stores;
 

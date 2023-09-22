@@ -1,6 +1,7 @@
 ﻿using Logitar.Faktur.Contracts.Actors;
+using Logitar.Faktur.Contracts.Stores;
 
-namespace Logitar.Faktur.Contracts.Stores;
+namespace Logitar.Faktur.Contracts.Departments;
 
 public class Department
 {
@@ -15,4 +16,6 @@ public class Department
 
   public Actor UpdatedBy { get; set; } = new();
   public DateTime UpdatedOn { get; set; }
+
+  public Store? Store { get; set; }
 }
