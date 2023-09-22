@@ -36,6 +36,7 @@ public class DepartmentNotFoundException : Exception, IValidationException
   {
     StoreId = storeId;
     Number = number;
+    PropertyName = propertyName;
   }
 
   private static string BuildMessage(StoreId storeId, DepartmentNumber number, string propertyName) => new ExceptionMessageBuilder(ErrorMessage)

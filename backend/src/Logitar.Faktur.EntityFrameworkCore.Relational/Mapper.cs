@@ -40,7 +40,8 @@ internal class Mapper
     return destination;
   }
 
-  public Department ToDepartment(DepartmentEntity source)
+  public Department ToDepartment(DepartmentEntity source) => ToDepartment(source, mapStore: true);
+  public Department ToDepartment(DepartmentEntity source, bool mapStore)
   {
     Department destination = new()
     {
@@ -52,21 +53,21 @@ internal class Mapper
       CreatedOn = ToUniversalTime(source.CreatedOn),
       UpdatedBy = FindActor(source.UpdatedBy),
       UpdatedOn = ToUniversalTime(source.UpdatedOn),
-      Store = source.Store == null ? null : ToStore(source.Store)
+      Store = (!mapStore || source.Store == null) ? null : ToStore(source.Store, mapDepartments: false)
     };
 
     return destination;
   }
 
-  public Store ToStore(StoreEntity source)
+  public Store ToStore(StoreEntity source) => ToStore(source, mapDepartments: true);
+  public Store ToStore(StoreEntity source, bool mapDepartments)
   {
     Store destination = new()
     {
       Number = source.Number,
       DisplayName = source.DisplayName,
       Description = source.Description,
-      Banner = source.Banner == null ? null : ToBanner(source.Banner),
-      Departments = source.Departments.Select(ToDepartment)
+      Banner = source.Banner == null ? null : ToBanner(source.Banner)
     };
 
     MapAggregate(source, destination);
@@ -92,6 +93,11 @@ internal class Mapper
         Extension = source.PhoneExtension,
         E164Formatted = source.PhoneE164Formatted
       };
+    }
+
+    if (mapDepartments)
+    {
+      destination.Departments = source.Departments.Select(department => ToDepartment(department, mapStore: false));
     }
 
     return destination;

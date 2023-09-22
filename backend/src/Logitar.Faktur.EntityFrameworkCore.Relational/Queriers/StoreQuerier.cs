@@ -44,8 +44,8 @@ internal class StoreQuerier : IStoreQuerier
     IQueryBuilder builder = _sqlHelper.QueryFrom(Db.Stores.Table)
       .LeftJoin(Db.Banners.BannerId, Db.Stores.BannerId)
       .Where(Db.Banners.AggregateId, bannerId == null ? Operators.IsNull() : Operators.IsEqualTo(bannerId))
-      .SelectAll(Db.Stores.Table)
-      .ApplyIdIn(payload.IdIn, Db.Stores.AggregateId);
+      .SelectAll(Db.Stores.Table);
+    _sqlHelper.ApplyTextSearch(builder, payload.Id, Db.Stores.AggregateId); // TODO(fpion): handle Guid Ids
     _sqlHelper.ApplyTextSearch(builder, payload.Search, Db.Stores.Number, Db.Stores.DisplayName,
       Db.Stores.AddressFormatted, Db.Stores.PhoneE164Formatted);
 

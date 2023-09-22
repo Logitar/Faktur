@@ -117,12 +117,16 @@ public class StoreAggregate : AggregateRoot
 
   public void Delete(ActorId actorId = default) => ApplyChange(new StoreDeletedEvent(actorId));
 
-  public void RemoveDepartment(DepartmentNumber number, ActorId actorId = default)
+  public bool RemoveDepartment(DepartmentNumber number, ActorId actorId = default)
   {
-    if (_departments.ContainsKey(number))
+    if (!_departments.ContainsKey(number))
     {
-      ApplyChange(new DepartmentRemovedEvent(actorId, number));
+      return false;
     }
+
+    ApplyChange(new DepartmentRemovedEvent(actorId, number));
+
+    return true;
   }
   protected virtual void Apply(DepartmentRemovedEvent @event) => _departments.Remove(@event.Number);
 

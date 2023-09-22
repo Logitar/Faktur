@@ -44,6 +44,8 @@ internal class StoreEntity : AggregateEntity
 
   public void RemoveDepartment(DepartmentRemovedEvent @event)
   {
+    Update(@event);
+
     DepartmentEntity? department = Departments.SingleOrDefault(x => x.Number == @event.Number.Value);
     if (department != null)
     {
@@ -53,6 +55,8 @@ internal class StoreEntity : AggregateEntity
 
   public void SetDepartment(DepartmentSavedEvent @event)
   {
+    Update(@event);
+
     DepartmentEntity? department = Departments.SingleOrDefault(x => x.Number == @event.Number.Value);
     if (department == null)
     {

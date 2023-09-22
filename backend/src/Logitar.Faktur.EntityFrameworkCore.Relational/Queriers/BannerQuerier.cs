@@ -37,8 +37,8 @@ internal class BannerQuerier : IBannerQuerier
   public async Task<SearchResults<Banner>> SearchAsync(SearchBannersPayload payload, CancellationToken cancellationToken)
   {
     IQueryBuilder builder = _sqlHelper.QueryFrom(Db.Banners.Table)
-      .SelectAll(Db.Banners.Table)
-      .ApplyIdIn(payload.IdIn, Db.Banners.AggregateId);
+      .SelectAll(Db.Banners.Table);
+    _sqlHelper.ApplyTextSearch(builder, payload.Id, Db.Banners.AggregateId); // TODO(fpion): handle Guid Ids
     _sqlHelper.ApplyTextSearch(builder, payload.Search, Db.Banners.DisplayName);
 
     IQueryable<BannerEntity> query = _banners.FromQuery(builder)

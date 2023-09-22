@@ -23,7 +23,11 @@ internal class RemoveDepartmentCommandHandler : IRequestHandler<RemoveDepartment
     StoreAggregate store = await _storeRepository.LoadAsync(storeId, cancellationToken)
       ?? throw new AggregateNotFoundException<StoreAggregate>(storeId.AggregateId, nameof(command.StoreId));
 
-    store.RemoveDepartment(new DepartmentNumber(command.Number));
+    DepartmentNumber number = new(command.Number);
+    if (!store.RemoveDepartment(number))
+    {
+      throw new DepartmentNotFoundException(storeId, number, nameof(command.Number));
+    }
 
     store.Update(_applicationContext.ActorId);
 

@@ -19,7 +19,7 @@ public class DepartmentController : ControllerBase // TODO(fpion): Authorization
   [HttpDelete("{number}")]
   public async Task<ActionResult<Department>> DeleteAsync(string storeId, string number, CancellationToken cancellationToken)
   {
-    return Ok(await _departmentService.RemoveAsync(storeId, number, cancellationToken));
+    return Accepted(await _departmentService.RemoveAsync(storeId, number, cancellationToken));
   }
 
   [HttpGet("{number}")]
@@ -32,18 +32,18 @@ public class DepartmentController : ControllerBase // TODO(fpion): Authorization
   [HttpPut("{number}")]
   public async Task<ActionResult<Department>> SaveAsync(string storeId, string number, SaveDepartmentPayload payload, CancellationToken cancellationToken)
   {
-    return Ok(await _departmentService.SaveAsync(storeId, number, payload, cancellationToken));
+    return Accepted(await _departmentService.SaveAsync(storeId, number, payload, cancellationToken));
   }
 
   [HttpGet]
-  public async Task<ActionResult<SearchResults<Department>>> SearchAsync(string id, SearchDepartmentsQuery query, CancellationToken cancellationToken)
+  public async Task<ActionResult<SearchResults<Department>>> SearchAsync(string storeId, [FromQuery] SearchDepartmentsQuery query, CancellationToken cancellationToken)
   {
-    return Ok(await _departmentService.SearchAsync(id, query.ToPayload(), cancellationToken));
+    return Ok(await _departmentService.SearchAsync(storeId, query.ToPayload(), cancellationToken));
   }
 
   [HttpPatch("{number}")]
   public async Task<ActionResult<Department>> UpdateAsync(string storeId, string number, UpdateDepartmentPayload payload, CancellationToken cancellationToken)
   {
-    return Ok(await _departmentService.UpdateAsync(storeId, number, payload, cancellationToken));
+    return Accepted(await _departmentService.UpdateAsync(storeId, number, payload, cancellationToken));
   }
 }
