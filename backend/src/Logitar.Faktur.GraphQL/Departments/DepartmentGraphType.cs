@@ -10,7 +10,7 @@ internal class DepartmentGraphType : ObjectGraphType<Department>
   public DepartmentGraphType()
   {
     Name = nameof(Department);
-    Description = "TODO";
+    Description = "Represents a department, typically a subdivision of a store.";
 
     Field(x => x.Number)
       .Description("The number of the department.");
@@ -33,6 +33,6 @@ internal class DepartmentGraphType : ObjectGraphType<Department>
       .Description("The date and time when the department was updated lastly.");
 
     Field(x => x.Store, type: typeof(StoreGraphType))
-      .Description("TODO");
+      .Description("The store in which the department resides to.");
   }
 }
