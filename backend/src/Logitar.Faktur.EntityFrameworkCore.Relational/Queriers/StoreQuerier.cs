@@ -39,11 +39,11 @@ internal class StoreQuerier : IStoreQuerier
 
   public async Task<SearchResults<Store>> SearchAsync(SearchStoresPayload payload, CancellationToken cancellationToken)
   {
-    BannerId? bannerId = string.IsNullOrWhiteSpace(payload.BannerId) ? null : new(payload.BannerId);
+    string? bannerId = string.IsNullOrWhiteSpace(payload.BannerId) ? null : new BannerId(payload.BannerId).Value;
 
     IQueryBuilder builder = _sqlHelper.QueryFrom(Db.Stores.Table)
-      .Join(new Join(JoinKind.Left, Db.Banners.BannerId, Db.Stores.BannerId))
-      .Where(Db.Banners.AggregateId, bannerId == null ? Operators.IsNull() : Operators.IsEqualTo(bannerId.Value))
+      .LeftJoin(Db.Banners.BannerId, Db.Stores.BannerId)
+      .Where(Db.Banners.AggregateId, bannerId == null ? Operators.IsNull() : Operators.IsEqualTo(bannerId))
       .SelectAll(Db.Stores.Table)
       .ApplyIdIn(payload.IdIn, Db.Stores.AggregateId);
     _sqlHelper.ApplyTextSearch(builder, payload.Search, Db.Stores.Number, Db.Stores.DisplayName,

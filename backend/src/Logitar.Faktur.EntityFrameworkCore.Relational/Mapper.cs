@@ -3,6 +3,7 @@ using Logitar.Faktur.Application;
 using Logitar.Faktur.Contracts;
 using Logitar.Faktur.Contracts.Actors;
 using Logitar.Faktur.Contracts.Banners;
+using Logitar.Faktur.Contracts.Departments;
 using Logitar.Faktur.Contracts.Stores;
 using Logitar.Faktur.EntityFrameworkCore.Relational.Entities;
 
@@ -50,7 +51,8 @@ internal class Mapper
       CreatedBy = FindActor(source.CreatedBy),
       CreatedOn = ToUniversalTime(source.CreatedOn),
       UpdatedBy = FindActor(source.UpdatedBy),
-      UpdatedOn = ToUniversalTime(source.UpdatedOn)
+      UpdatedOn = ToUniversalTime(source.UpdatedOn),
+      Store = source.Store == null ? null : ToStore(source.Store)
     };
 
     return destination;

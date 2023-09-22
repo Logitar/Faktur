@@ -1,4 +1,5 @@
 ﻿using Logitar.EventSourcing;
+using Logitar.Faktur.Domain.Departments.Events;
 
 namespace Logitar.Faktur.EntityFrameworkCore.Relational.Entities;
 
@@ -21,9 +22,33 @@ internal class DepartmentEntity
   public string UpdatedBy { get; private set; } = string.Empty;
   public DateTime UpdatedOn { get; private set; }
 
+  public DepartmentEntity(DepartmentSavedEvent @event, StoreEntity store)
+  {
+    Store = store;
+    StoreId = store.StoreId;
+
+    Number = @event.Number.Value;
+
+    CreatedBy = @event.ActorId.Value;
+    CreatedOn = @event.OccurredOn.ToUniversalTime();
+
+    Update(@event);
+  }
+
   private DepartmentEntity()
   {
   }
 
   public IEnumerable<ActorId> GetActorIds() => new ActorId[] { new(CreatedBy), new(UpdatedBy) };
+
+  public void Update(DepartmentSavedEvent @event)
+  {
+    Version++;
+
+    UpdatedBy = @event.ActorId.Value;
+    UpdatedOn = @event.OccurredOn.ToUniversalTime();
+
+    DisplayName = @event.Department.DisplayName.Value;
+    Description = @event.Department.Description?.Value;
+  }
 }

@@ -1,6 +1,7 @@
 ﻿using Logitar.EventSourcing.EntityFrameworkCore.Relational;
 using Logitar.Faktur.Application.Actors;
 using Logitar.Faktur.Application.Banners;
+using Logitar.Faktur.Application.Departments;
 using Logitar.Faktur.Application.Stores;
 using Logitar.Faktur.Domain.Banners;
 using Logitar.Faktur.Domain.Stores;
@@ -34,6 +35,7 @@ public static class DependencyInjectionExtensions
   {
     return services
       .AddScoped<IBannerEventHandler, BannerEventHandler>()
+      .AddScoped<IDepartmentEventHandler, DepartmentEventHandler>()
       .AddScoped<IStoreEventHandler, StoreEventHandler>();
   }
 
@@ -41,6 +43,7 @@ public static class DependencyInjectionExtensions
   {
     return services
       .AddScoped<IBannerQuerier, BannerQuerier>()
+      .AddScoped<IDepartmentQuerier, DepartmentQuerier>()
       .AddScoped<IStoreQuerier, StoreQuerier>();
   }
 

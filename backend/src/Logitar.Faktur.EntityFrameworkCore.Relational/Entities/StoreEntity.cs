@@ -1,4 +1,5 @@
 ﻿using Logitar.EventSourcing;
+using Logitar.Faktur.Domain.Departments.Events;
 using Logitar.Faktur.Domain.Stores.Events;
 
 namespace Logitar.Faktur.EntityFrameworkCore.Relational.Entities;
@@ -39,6 +40,29 @@ internal class StoreEntity : AggregateEntity
 
   private StoreEntity() : base()
   {
+  }
+
+  public void RemoveDepartment(DepartmentRemovedEvent @event)
+  {
+    DepartmentEntity? department = Departments.SingleOrDefault(x => x.Number == @event.Number.Value);
+    if (department != null)
+    {
+      Departments.Remove(department);
+    }
+  }
+
+  public void SetDepartment(DepartmentSavedEvent @event)
+  {
+    DepartmentEntity? department = Departments.SingleOrDefault(x => x.Number == @event.Number.Value);
+    if (department == null)
+    {
+      department = new(@event, this);
+      Departments.Add(department);
+    }
+    else
+    {
+      department.Update(@event);
+    }
   }
 
   public void Update(StoreUpdatedEvent @event, BannerEntity? banner = null)
